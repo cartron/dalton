@@ -18,4 +18,22 @@
 #			displayed: (multi-unit) weight, AA, time (minutes) and form
 #				(multi-unit) weight, time (minutes) and form will feed the brew day tasks (this is not thought out yet)
 #			fed to aggregate IBU calculations
+#			AAU converter to plan for audibles
 #			probably other things?
+
+
+class Hop(object)
+	def __init__(self, type="generic", lb=0, oz=1, AA=10, min=0, form="pellet"):
+		self.type=type
+		self.lb=lb
+		self.oz=oz
+		self.AA=AA
+		self.minutes=min
+		self.form=form
+		
+		#test attributes
+		return self.oz, self.minutes
+		
+#test main
+Hop()
+raw_input("\nExit")
