@@ -22,18 +22,17 @@
 #			probably other things?
 
 
-class Hop(object)
-	def __init__(self, type="generic", lb=0, oz=1, AA=10, min=0, form="pellet"):
-		self.type=type
-		self.lb=lb
-		self.oz=oz
-		self.AA=AA
-		self.minutes=min
-		self.form=form
-		
-		#test attributes
-		return self.oz, self.minutes
+class Hop(object):
+	def __init__(self, type, lb, oz, AA, min, form):
+		self.type = type
+		self.lb = lb
+		self.oz = oz
+		self.AA = AA
+		self.minutes = min
+		self.form = form
+
 		
 #test main
-Hop()
-raw_input("\nExit")
+hop = Hop("generic", 0, 1, 10, 0, "pellet")
+print('print', hop.type)
+input("\nExit")
