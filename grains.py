@@ -43,10 +43,11 @@ class Grain(object):
 			#I'm not certain that this is correct--might have to do some Qbrew testing
 
 	def returnOG(self, volume, efficiency):
-                #this isn't working
-		pt = Grain.calculatePoints(volume, efficiency)
+		vol = volume
+		efficient = efficiency
+		pt = self.calculatePoints(vol, efficient)
 		OG = 1 + (pt / 1000)
-		
+		return OG
 			
 		
 #test main
