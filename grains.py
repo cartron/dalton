@@ -22,7 +22,7 @@ class Grain(object):
 	count = 0
 	
 	def __init__(self, type= 'generic', lb = 1, oz = 0, ppg = 25, degreesL = 1, sugarType="grain", use="mashed"):
-		
+	
 		Grain.count += 1
 			#This might need to live outside of the Grain class at some point (in a Recipe class 
 			#that aggregates grains and stuff (and does the total OG/color calculations?))
@@ -64,19 +64,19 @@ class Grain(object):
 		
 		
 #test main
-grain = Grain(ppg=30)
-grainlb = Grain(oz=8)
-points = grain.calculatePoints(5, 0.75)
-og = grain.returnOG(5, 0.75)
-color = grain.calculateColor()
+#grain = Grain(ppg=30)
+#grainlb = Grain(oz=8)
+#points = grain.calculatePoints(5, 0.75)
+#og = grain.returnOG(5, 0.75)
+#color = grain.calculateColor()
 
-print('type:', grain.type)
-print('weight:', grain.weight, 'oz')
-print('weight:', grainlb.pounds, 'lb')
-print('points:', points)
-print('OG:', og)
-print('count:', grain.count)
-print('Count:', Grain.count)
-print('Color:',color)
-print('Color:',grainlb.calculateColor())
-input("\nExit")
+#print('type:', grain.type)
+#print('weight:', grain.weight, 'oz')
+#print('weight:', grainlb.pounds, 'lb')
+#print('points:', points)
+#print('OG:', og)
+#print('count:', grain.count)
+#print('Count:', Grain.count)
+#print('Color:',color)
+#print('Color:',grainlb.calculateColor())
+#input("\nExit")

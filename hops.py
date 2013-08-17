@@ -52,16 +52,16 @@ class Hop(object):
 		return ibu
 		
 #test main
-hop = Hop(min=60)
-ibuhop = Hop(min=60)
-aauz = hop.calculateAAU()
-ibus = ibuhop.calculateTinsethIBU(1.05,5)
-ibus2 = hop.calculateTinsethIBU(1.05,5)
+#hop = Hop(min=60)
+#ibuhop = Hop(min=60)
+#aauz = hop.calculateAAU()
+#ibus = ibuhop.calculateTinsethIBU(1.05,5)
+#ibus2 = hop.calculateTinsethIBU(1.05,5)
 
-print('type:', hop.type)
-print('weight:', hop.weight, 'oz')
-print('AAUs:', aauz)
-print('IBU:', ibus)
-print('count:', hop.count)
-print('count:', Hop.count)
-input("\nExit")
+#print('type:', hop.type)
+#print('weight:', hop.weight, 'oz')
+#print('AAUs:', aauz)
+#print('IBU:', ibus)
+#print('count:', hop.count)
+#print('count:', Hop.count)
+#input("\nExit")
