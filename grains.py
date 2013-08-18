@@ -39,14 +39,18 @@ class Grain(object):
 		self.use = use
 		
 	def calculatePoints(self, volume, efficiency):
-		#returns the points added from a single fermentable
-		#this might not work for extract--look into that
+		#-returns the points added from a single fermentable
+		#-this might not work for extract--look into that
+		#-this should eventually take no inputs, but rather pull directly
+		#	from a CONFIG module
 		pts = ((self.ppg * self.pounds) / volume) * efficiency
 		return pts
 			#I'm not certain that this is correct--might have to do some Qbrew testing
 
 	def returnOG(self, volume, efficiency):
 		#return the gravity contribution of a single fermentable addition
+		#-this should eventually take no inputs, but rather pull directly
+		#	from a CONFIG module
 		vol = volume
 		efficient = efficiency
 		pt = self.calculatePoints(vol, efficient)

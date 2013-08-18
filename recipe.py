@@ -26,26 +26,51 @@ class Recipe(object):
 #The umbrella class that will contain all of the recipe components
 	
 	count = 0
-	#A count might come in handy for save logs or having a recipe book
-	grainList=[]
-	#This will hold all of the grain objects that are created
+		#A count might come in handy for save logs or having a recipe book
+	ogDict = {}
+	
+	#grainList=[]		This will be the real one-- using multiple list items to test calculations
+	grainList=[grains.Grain(),grains.Grain(ppg=20)]
+		#This will hold all of the grain objects that are created
 	
 	def __init__(self):
 		Recipe.count += 1
 		
 	def addGrain(self, type= 'generic', lb = 1, oz = 0, ppg = 25, degreesL = 1, sugarType="grain", use="mashed"):
-		
 		#Add a grain object to the grainList--this might make more sense outside of the class
 		Recipe.grainList.append(grains.Grain(type, lb, oz, ppg, degreesL, sugarType))
 		return Recipe.grainList
 		
+	def calculateTotalPoints(self, volume, efficiency):
+		#This will calculate the points of the entire recipe
+		#-this should eventually take no inputs, but rather pull directly
+		#	from a CONFIG module
 		
-	
-	#def calculateTotalOG(self, volume, efficiency):
-	#	vol = volume
-	#	efficient = efficiency
-	#	for grain in grainlist
-	#		ogN= self.calculatePoints(vol, efficient)
+		totalPoints = 0
+		pointList = []
+		#ogDict = {}
+		
+		for grain in range(len(Recipe.grainList)):
+			pointList.append(Recipe.grainList[grain].calculatePoints(volume, efficiency))
+			totalPoints += pointList[grain]
+			
+		Recipe.ogDict.update({'pointList':pointList,'totalPoints':totalPoints})
+			#It might be useful to store it in a dictionary in case
+			#	we ever need to access the grain list (which may be
+			#	unlikely)
+		return Recipe.ogDict
+		
+	def returnTotalOG(self, volume, efficiency):
+		#Calculates the OG of the recipe
+		#-this should eventually take no inputs, but rather pull directly
+		#	from a CONFIG module
+		
+		OG = Recipe.ogDict['totalPoints']
+		OG = 1 + (OG / 1000)
+
+		Recipe.ogDict.update({'OG': OG})
+		return Recipe.ogDict		
+		
 	
 #test main
 #grain = grains.Grain(ppg=30)
@@ -55,8 +80,10 @@ print('pringing grains.Grain.count:',grains.Grain.count)
 
 recipe = Recipe()
 print('printing recipe.grainList:',recipe.grainList)
-added=Recipe().addGrain(ppg=9001)
+added=Recipe().addGrain(ppg=35)
 print('printing added:',added)
 print('printing added[0].ppg:',added[0].ppg)
+print('testing calculateTotalPoints:',recipe.calculateTotalPoints(2,.75)['totalPoints'])
+print('testing returnTotalOG:',recipe.returnTotalOG(2,.75)['OG'])
 
 input('/nExit')
