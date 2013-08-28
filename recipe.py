@@ -31,17 +31,18 @@ class Recipe(object):
 
 	statisticalDic = {'OG':0, 'IBUs':0, 'SRM':0, 'ABV':0}
 	
-	#grainList=[]		This will be the real one-- using multiple list items to test calculations
-	grainList=[grains.Grain(),grains.Grain(ppg=20)]
-		#This will hold all of the grain objects that are created
-	
 	def __init__(self):
 		Recipe.count += 1
-		
+	
+		#self.grainList=[]		This will be the real one-- using multiple list items to test calculations
+		self.grainList=[grains.Grain(),grains.Grain(ppg=20)]
+			#This will hold all of the grain objects that are created
+	
+	
 	def addGrain(self, type= 'generic', lb = 1, oz = 0, ppg = 25, degreesL = 1, sugarType="grain", use="mashed"):
 		#Add a grain object to the grainList--this might make more sense outside of the class
-		Recipe.grainList.append(grains.Grain(type, lb, oz, ppg, degreesL, sugarType))
-		return Recipe.grainList
+		self.grainList.append(grains.Grain(type, lb, oz, ppg, degreesL, sugarType))
+		return self.grainList
 		
 	def calculateTotalPoints(self, volume, efficiency):
 		#This will calculate the points of the entire recipe
@@ -51,8 +52,8 @@ class Recipe(object):
 		totalPoints = 0
 		pointList = []
 		
-		for grain in range(len(Recipe.grainList)):
-			pointList.append(Recipe.grainList[grain].calculatePoints(volume, efficiency))
+		for grain in range(len(self.grainList)):
+			pointList.append(self.grainList[grain].calculatePoints(volume, efficiency))
 			totalPoints += pointList[grain]
 			
 		Recipe.ogDict.update({'pointList':pointList,'totalPoints':totalPoints})
@@ -80,8 +81,8 @@ class Recipe(object):
 		totalColor = 0
 		colorList = []
 		
-		for grain in range(len(Recipe.grainList)):
-			colorList.append(Recipe.grainList[grain].calculateColor())
+		for grain in range(len(self.grainList)):
+			colorList.append(self.grainList[grain].calculateColor())
 			totalColor += colorList[grain]
 		totalMCUs = totalColor / volume
 		moreyColor = 1.4922 * totalMCUs**0.6859
