@@ -29,7 +29,7 @@ class Hop(object):
 	count = 0
 	totalIBU = 0
 
-	def __init__(self, type= 'generic', lb = 0, oz = 1, aa = 10, min = 0, form = 'pellet'):
+	def __init__(self, type= 'generic', lb = 0, oz = 1, aa = 10, min = 0, form = 'pellet', og = 1.05, volume = 5):
 		
 		Hop.count += 1
 			#This might need to live outside of the Hop class at some point (in a Recipe class 
@@ -42,26 +42,20 @@ class Hop(object):
 		self.aa = aa
 		self.minutes = min
 		self.form = form
-	
-	def calculateAAU(self):
-		aau = self.aa * self.weight
-		return aau
-		
-	def calculateTinsethIBU(self,og,volume):
-		ibu = (1.65 * 0.000125 **(og - 1)) * ((1 - math.exp(-0.04 * self.minutes)) / 4.15) * (((self.aa / 100) * self.weight * 7490) / volume)
-		return ibu
+		self.og = og
+		self.volume = volume
+			#these need to go
+
+		self.aau = self.aa * self.weight
+		self.tinsethIBU = (1.65 * 0.000125 **(self.og - 1)) * ((1 - math.exp(-0.04 * self.minutes)) / 4.15) * (((self.aa / 100) * self.weight * 7490) / self.volume)
 		
 #test main
-#hop = Hop(min=60)
-#ibuhop = Hop(min=60)
-#aauz = hop.calculateAAU()
-#ibus = ibuhop.calculateTinsethIBU(1.05,5)
-#ibus2 = hop.calculateTinsethIBU(1.05,5)
+hop = Hop(min=60)
 
-#print('type:', hop.type)
-#print('weight:', hop.weight, 'oz')
-#print('AAUs:', aauz)
-#print('IBU:', ibus)
-#print('count:', hop.count)
-#print('count:', Hop.count)
-#input("\nExit")
+print('type:', hop.type)
+print('weight:', hop.weight, 'oz')
+print('AAUs:', hop.aau)
+print('IBU:', hop.tinsethIBU)
+print('count:', hop.count)
+print('count:', Hop.count)
+input("\nExit")
