@@ -21,11 +21,13 @@ class Grain(object):
 
 	count = 0
 	
-	def __init__(self, type= 'generic', lb = 1, oz = 0, ppg = 25, degreesL = 1, sugarType="grain", use="mashed"):
+	def __init__(self, type= 'generic', lb = 1, oz = 0, ppg = 25, degreesL = 1, sugarType = "grain", use = "mashed", efficiency = 0.75, volume = 5):
 	
 		Grain.count += 1
 			#This might need to live outside of the Grain class at some point (in a Recipe class 
 			#that aggregates grains and stuff (and does the total OG/color calculations?))
+			#
+			#Efficiency needs to go once CONFIG becomes a thing
 		
 		#establish the main attributes
 		self.type = type
@@ -37,50 +39,26 @@ class Grain(object):
 		self.degreesL = degreesL
 		self.sugarType = sugarType
 		self.use = use
+		self.efficiency = efficiency
+		self.volume = volume
 		
-	def calculatePoints(self, volume, efficiency):
-		#-returns the points added from a single fermentable
-		#-this might not work for extract--look into that
-		#-this should eventually take no inputs, but rather pull directly
-		#	from a CONFIG module
-		pts = ((self.ppg * self.pounds) / volume) * efficiency
-		return pts
-			#I'm not certain that this is correct--might have to do some Qbrew testing
+		self.points = ((self.ppg * self.pounds) / self.volume) * efficiency
+		self.og = 1 + (self.points / 1000)
+		self.color = self.pounds * self.degreesL
 
-	def returnOG(self, volume, efficiency):
-		#return the gravity contribution of a single fermentable addition
-		#-this should eventually take no inputs, but rather pull directly
-		#	from a CONFIG module
-		vol = volume
-		efficient = efficiency
-		pt = self.calculatePoints(vol, efficient)
-		OG = 1 + (pt / 1000)
-		return OG
-	
-	def calculateColor(self):
-		#calculates the color contriution of a single fermentable addition
-		#the color from all additions should be divided by the total volume
-			#and fed through a color estimating formula (initially just Morey)
-		#this might not be the most effective way to do things
-		color = self.pounds * self.degreesL
-		return color
 		
 		
 		
 #test main
-#grain = Grain(ppg=30)
-#grainlb = Grain(oz=8)
-#points = grain.calculatePoints(5, 0.75)
-#og = grain.returnOG(5, 0.75)
-#color = grain.calculateColor()
+grain = Grain(ppg=30)
+grainlb = Grain(oz=8)
 
-#print('type:', grain.type)
-#print('weight:', grain.weight, 'oz')
-#print('weight:', grainlb.pounds, 'lb')
-#print('points:', points)
-#print('OG:', og)
-#print('count:', grain.count)
-#print('Count:', Grain.count)
-#print('Color:',color)
-#print('Color:',grainlb.calculateColor())
-#input("\nExit")
+print('type:', grain.type)
+print('weight:', grain.weight, 'oz')
+print('weight:', grainlb.pounds, 'lb')
+print('points:', grain.points)
+print('OG:', grain.og)
+print('count:', grain.count)
+print('Count:', Grain.count)
+print('Color:',grain.color)
+input("\nExit")
