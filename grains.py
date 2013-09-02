@@ -16,18 +16,19 @@
 #		other stuff will happen
 
 
+import settings
+
+
 class Grain(object):
 #The basic class that all fermentables fall under
 
 	count = 0
 	
-	def __init__(self, type= 'generic', lb = 1, oz = 0, ppg = 25, degreesL = 1, sugarType = "grain", use = "mashed", efficiency = 0.75, volume = 5):
+	def __init__(self, type= 'generic', lb = 1, oz = 0, ppg = 25, degreesL = 1, sugarType = "grain", use = "mashed"):
 	
 		Grain.count += 1
 			#This might need to live outside of the Grain class at some point (in a Recipe class 
 			#that aggregates grains and stuff (and does the total OG/color calculations?))
-			#
-			#Efficiency needs to go once CONFIG becomes a thing
 		
 		#establish the main attributes
 		self.type = type
@@ -39,11 +40,11 @@ class Grain(object):
 		self.degreesL = degreesL
 		self.sugarType = sugarType
 		self.use = use
-		self.efficiency = efficiency
-		self.volume = volume
 		
-		self.points = ((self.ppg * self.pounds) / self.volume) * efficiency
-		self.og = 1 + (self.points / 1000)
+		efficiency = settings.Efficiency
+		volume = settings.FinalVolume
+		
+		self.points = ((self.ppg * self.pounds) / volume) * self.efficiency
 		self.color = self.pounds * self.degreesL
 
 		
@@ -57,7 +58,6 @@ print('type:', grain.type)
 print('weight:', grain.weight, 'oz')
 print('weight:', grainlb.pounds, 'lb')
 print('points:', grain.points)
-print('OG:', grain.og)
 print('count:', grain.count)
 print('Count:', Grain.count)
 print('Color:',grain.color)

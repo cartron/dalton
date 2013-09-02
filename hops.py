@@ -22,14 +22,18 @@
 #			fed to aggregate IBU calculations
 #			AAU converter to plan for audibles
 #			probably other things?
+
+
+import settings
 import math
+
 
 class Hop(object):
 	
 	count = 0
 	totalIBU = 0
 
-	def __init__(self, type= 'generic', lb = 0, oz = 1, aa = 10, min = 0, form = 'pellet', og = 1.05, volume = 5):
+	def __init__(self, type= 'generic', lb = 0, oz = 1, aa = 10, min = 0, form = 'pellet', og = 1.05):
 		
 		Hop.count += 1
 			#This might need to live outside of the Hop class at some point (in a Recipe class 
@@ -43,11 +47,11 @@ class Hop(object):
 		self.minutes = min
 		self.form = form
 		self.og = og
-		self.volume = volume
-			#these need to go
+		
+		volume = settings.FinalVolume
 
 		self.aau = self.aa * self.weight
-		self.tinsethIBU = (1.65 * 0.000125 **(self.og - 1)) * ((1 - math.exp(-0.04 * self.minutes)) / 4.15) * (((self.aa / 100) * self.weight * 7490) / self.volume)
+		self.tinsethIBU = (1.65 * 0.000125 **(self.og - 1)) * ((1 - math.exp(-0.04 * self.minutes)) / 4.15) * (((self.aa / 100) * self.weight * 7490) / volume)
 		
 #test main
 hop = Hop(min=60)
