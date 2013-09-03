@@ -17,6 +17,7 @@
 #
 
 
+import settings
 import grains
 import hops
 import water
@@ -27,81 +28,70 @@ class Recipe(object):
 	
 	count = 0
 		#A count might come in handy for save logs or having a recipe book
-	ogDict = {}
-
-	statisticalDic = {'OG':0, 'IBUs':0, 'SRM':0, 'ABV':0}
 	
 	def __init__(self):
 		Recipe.count += 1
+		
+		self.ogDict = {}
+		self.statisticalDict = {'OG':0, 'IBUs':0, 'SRM':0, 'ABV':0}
+		
+		volume = settings.FinalVolume
+		efficiency = settings.Efficiency
 	
 		#self.grainList=[]		This will be the real one-- using multiple list items to test calculations
 		self.grainList=[grains.Grain(),grains.Grain(ppg=20)]
 			#This will hold all of the grain objects that are created
-	
-	
-	def addGrain(self, type= 'generic', lb = 1, oz = 0, ppg = 25, degreesL = 1, sugarType="grain", use="mashed"):
-		#Add a grain object to the grainList--this might make more sense outside of the class
-		self.grainList.append(grains.Grain(type, lb, oz, ppg, degreesL, sugarType))
-		return self.grainList
+			#
+			#This doesn't really make sense in the init
 		
-	def calculateTotalPoints(self, volume, efficiency):
-		#This will calculate the points of the entire recipe
-		#-this should eventually take no inputs, but rather pull directly
-		#	from a CONFIG module
+		
+		#Store and calculate COLOR, PPG and OG
 		
 		totalPoints = 0
-		pointList = []
-		
-		for grain in range(len(self.grainList)):
-			pointList.append(self.grainList[grain].calculatePoints(volume, efficiency))
-			totalPoints += pointList[grain]
-			
-		Recipe.ogDict.update({'pointList':pointList,'totalPoints':totalPoints})
-			#It might be useful to store it in a dictionary in case
-			#	we ever need to access the grain list (which may be
-			#	unlikely)
-		return Recipe.ogDict
-		
-	def returnTotalOG(self, volume, efficiency):
-		#Calculates the OG of the recipe
-		#-this should eventually take no inputs, but rather pull directly
-		#	from a CONFIG module
-		
-		OG = Recipe.ogDict['totalPoints']
-		OG = 1 + (OG / 1000)
-
-		Recipe.ogDict.update({'OG': OG})
-		return Recipe.ogDict		
-
-	def returnTotalColor(self, volume):
-		#Estimates the recipe's SRM
-		#-this should eventually take no inputs, but rather pull directly
-		#	from a CONFIG module
-		
 		totalColor = 0
+		
+		pointList = []
 		colorList = []
 		
+			#loop through the grain list and perform some calculations
 		for grain in range(len(self.grainList)):
-			colorList.append(self.grainList[grain].calculateColor())
+			pointList.append(self.grainList[grain].points)
+			totalPoints += pointList[grain]
+			
+			colorList.append(self.grainList[grain].color)
 			totalColor += colorList[grain]
+			
+		self.ogDict.update({'pointList':pointList,'totalPoints':totalPoints})
+		
+		OG = self.ogDict['totalPoints']
+		OG = 1 + (OG / 1000)
+		self.ogDict.update({'OG': OG})
+
 		totalMCUs = totalColor / volume
 		moreyColor = 1.4922 * totalMCUs**0.6859
-		return moreyColor
+		
+		
+		self.statisticalDict.update({'OG':self.ogDict['OG'], 'SRM': moreyColor})
+			
+		
+		
 	
 #test main
 
-print('pringing grains.Grain.count:',grains.Grain.count)
+print('printing grains.Grain.count:',grains.Grain.count)
 
 recipe = Recipe()
 
 print('printing recipe.grainList:',recipe.grainList)
-added=Recipe().addGrain(ppg=35)
-print('printing added:',added)
-
-print('printing added[0].ppg:',added[0].ppg)
-print('testing calculateTotalPoints:',recipe.calculateTotalPoints(2,.75)['totalPoints'])
-print('testing returnTotalOG:',recipe.returnTotalOG(2,.75)['OG'])
-
-print('testing returnTotalColor:', recipe.returnTotalColor(2))
+print('testing ogDict:',recipe.ogDict)
+print('testing returnTotalOG:',recipe.statisticalDict)
 
 input('/nExit')
+
+
+
+#This could be useful for later, but I don't need it for now
+#def addGrain(self, type= 'generic', lb = 1, oz = 0, ppg = 25, degreesL = 1, sugarType="grain", use="mashed"):
+		#Add a grain object to the grainList--this might make more sense outside of the class
+#		self.grainList.append(grains.Grain(type, lb, oz, ppg, degreesL, sugarType, use))
+#		return self.grainList

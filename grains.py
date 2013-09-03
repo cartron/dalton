@@ -44,21 +44,21 @@ class Grain(object):
 		efficiency = settings.Efficiency
 		volume = settings.FinalVolume
 		
-		self.points = ((self.ppg * self.pounds) / volume) * self.efficiency
+		self.points = ((self.ppg * self.pounds) / volume) * efficiency
 		self.color = self.pounds * self.degreesL
 
 		
 		
 		
 #test main
-grain = Grain(ppg=30)
-grainlb = Grain(oz=8)
-
-print('type:', grain.type)
-print('weight:', grain.weight, 'oz')
-print('weight:', grainlb.pounds, 'lb')
-print('points:', grain.points)
-print('count:', grain.count)
-print('Count:', Grain.count)
-print('Color:',grain.color)
-input("\nExit")
+#grain = Grain(ppg=30)
+#grainlb = Grain(oz=8)
+#
+#print('type:', grain.type)
+#print('weight:', grain.weight, 'oz')
+#print('weight:', grainlb.pounds, 'lb')
+#print('points:', grain.points)
+#print('count:', grain.count)
+#print('Count:', Grain.count)
+#print('Color:',grain.color)
+#input("\nExit")
