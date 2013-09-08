@@ -51,7 +51,7 @@ class Hop(object):
 		volume = settings.FinalVolume
 
 		self.aau = self.aa * self.weight
-		self.tinsethIBU = (1.65 * 0.000125 **(self.og - 1)) * ((1 - math.exp(-0.04 * self.minutes)) / 4.15) * (((self.aa / 100) * self.weight * 7490) / volume)
+		#self.tinsethIBU = (1.65 * 0.000125 **(self.og - 1)) * ((1 - math.exp(-0.04 * self.minutes)) / 4.15) * (((self.aa / 100) * self.weight * 7490) / volume)
 		
 #test main
 #hop = Hop(min=60)

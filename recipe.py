@@ -16,6 +16,7 @@
 #		in here even though it's pretty much superficial
 #
 
+import math
 
 import settings
 import grains
@@ -33,7 +34,7 @@ class Recipe(object):
 		Recipe.count += 1
 		
 		self.ogDict = {}
-		self.statisticalDict = {'OG':0, 'IBUs':0, 'SRM':0, 'ABV':0}
+		self.statisticalDict = {'OG':0, 'IBU':0, 'SRM':0, 'ABV':0}
 		
 		volume = settings.FinalVolume
 		efficiency = settings.Efficiency
@@ -41,8 +42,9 @@ class Recipe(object):
 		#self.grainList=[]		This will be the real one-- using multiple list items to test calculations
 		self.grainList=[grains.Grain(),grains.Grain(ppg=20)]
 			#This will hold all of the grain objects that are created
-			#
-			#This doesn't really make sense in the init
+		#self.hopList=[]		This will be the real one-- using multiple list items to test calculations
+		self.hopList=[hops.Hop(min=15), hops.Hop(aa=7, min=5), hops.Hop(aa=14, min=60)]
+			#This will hold all of the hop objects that are created
 		
 		
 		#Store and calculate COLOR, PPG and OG
@@ -72,6 +74,25 @@ class Recipe(object):
 		
 		
 		self.statisticalDict.update({'OG':self.ogDict['OG'], 'SRM': moreyColor})
+		
+		
+		#Store and calculate total AAUs and IBUs
+		
+		aauList = []
+		ibuList = []
+		
+		totalIBU = 0
+		
+			#Loop through the hop list, pull out AAUs (solely for storage at this point) and calculate IBU
+				#Only does Tinseth IBU calculations right now
+		for hop in range(len(self.hopList)):
+			aauList.append(self.hopList[hop].aau)
+			ibuList.append((1.65 * 0.000125 **(self.statisticalDict['OG'] - 1)) * 
+				((1 - math.exp(-0.04 * self.hopList[hop].minutes)) / 4.15) * 
+				(((self.hopList[hop].aa / 100) * self.hopList[hop].weight * 7490) / volume))
+			totalIBU += ibuList[hop]
+		
+		self.statisticalDict.update({'IBU':totalIBU})
 			
 		
 		
@@ -79,12 +100,17 @@ class Recipe(object):
 #test main
 
 print('printing grains.Grain.count:',grains.Grain.count)
+print('printing hops.Hop.count:',hops.Hop.count)
 
 recipe = Recipe()
 
 print('printing recipe.grainList:',recipe.grainList)
 print('testing ogDict:',recipe.ogDict)
-print('testing returnTotalOG:',recipe.statisticalDict)
+print('testing OG calcs:',recipe.statisticalDict['OG'])
+
+print('printing recipe.hopList:',recipe.hopList)
+
+print('testing stats:',recipe.statisticalDict)
 
 input('/nExit')
 
