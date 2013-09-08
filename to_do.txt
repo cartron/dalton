@@ -1,0 +1,5 @@
+-add pellet factor multiplication to hops
+	user should probably be able  to adjust this
+-water calculations
+-GUI
+-default attributes
