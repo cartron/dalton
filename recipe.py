@@ -3,11 +3,6 @@
 #	-Settings should be imported from a CONFIG type of module
 #		-in addition to settings things like recipe name and author should probably
 #			be pulled
-#	-The class should then import GRAIN and HOP and create a new instance of the objects
-#		at the user's command
-#	-It should use these to calculate overall recipe OG, SRM, and IBUs
-#	-Data should be stored somehow (dic?)
-#
 #
 #	Other thoughts:
 #	-this might be a good place to compare to style guidelines

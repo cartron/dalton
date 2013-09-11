@@ -1,5 +1,12 @@
+-move the recipe statistic calculations to update methods in the non-recipe classes
+	this will allow the recipe to recalculate stats when changes are made (it can't now)
+-water calculations
+	defaults are in an options place
+	user can update them in
 -add pellet factor multiplication to hops
 	user should probably be able  to adjust this
--water calculations
+-shopping list
+-brew day schedule
 -GUI
 -default attributes
+	could be built in to the config (so that a user can define them)

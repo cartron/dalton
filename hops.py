@@ -8,9 +8,6 @@
 #			the user should be able to name their own hop type (and fill in the rest of the data)
 #		-get() methods should pull AA from a database/xml for a given hop
 #		-a weight conversion method should convert lb and oz to a common unit (which ever works best for calculations)
-#		-an IBU calculation method should pull OG and volume as well as time, AA and weight in order to calculate Tinseth IBUs (some day add Rager)
-#			perhaps getOG() and getVolume() methods should facilitate this
-#		-a AAU conversion method should be fed time, AA and weight (?) and output the AAUs from the particular hop
 #
 #		the class should return return a (single unit) weight value, AA, time (minutes), form, IBU and AAU
 #

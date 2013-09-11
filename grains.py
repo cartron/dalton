@@ -7,11 +7,8 @@
 #		-update() methods should allow the user to select grain, lb, oz, ppg, degreesL, sugar type, and method
 #			the user should be able to name their own grain type (and fill in the rest of the data)
 #		-get() methods should pull attributes from a database/xml for a given grain
-#		-a weight conversion method should convert lb and oz to a common unit (which ever works best for calculations)
 #		-an extract calculation method should pull weight, ppg, efficiency, and volume in order to calculate og per grain
 #			perhaps getOG() and getVolume() methods should facilitate this
-#		-color calculation should return color based on some stuff
-#		-a points to (something--OG?) calculation should convert ppg to the proper display (50 ppg to 1.050)
 #
 #		other stuff will happen
 
