@@ -1,5 +1,6 @@
--move the recipe statistic calculations to update methods in the non-recipe classes
-	this will allow the recipe to recalculate stats when changes are made (it can't now)
+-move the recipe statistic calculations to update methods in the recipe class
+	pushing it back to the base classes will not work because something has to
+		hold each instance so that the loops can happen
 -water calculations
 	defaults are in an options place
 	user can update them in

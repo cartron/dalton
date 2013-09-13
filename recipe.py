@@ -30,33 +30,28 @@ class Recipe(object):
 		
 		self.ogDict = {}
 		self.statisticalDict = {'OG':0, 'IBU':0, 'SRM':0, 'ABV':0}
-		
-		volume = settings.FinalVolume
-		efficiency = settings.Efficiency
 	
-		#self.grainList=[]		This will be the real one-- using multiple list items to test calculations
+		#These lists will hold all of the related objects that are created (to be looped through)
 		self.grainList=[grains.Grain(),grains.Grain(ppg=20)]
-			#This will hold all of the grain objects that are created
-		#self.hopList=[]		This will be the real one-- using multiple list items to test calculations
 		self.hopList=[hops.Hop(min=15), hops.Hop(aa=7, min=5), hops.Hop(aa=14, min=60)]
-			#This will hold all of the hop objects that are created
+		#self.grainList=[]		This will be the real one-- using multiple list items to test calculations
+		#self.hopList=[]		This will be the real one-- using multiple list items to test calculations
+		
+		self.updateGravity()
+		self.updateIBU()
+		self.updateColor()
 		
 		
-		#Store and calculate COLOR, PPG and OG
+	def updateGravity(self):
+		#This will update the recipe points and gravity.
 		
 		totalPoints = 0
-		totalColor = 0
-		
 		pointList = []
-		colorList = []
 		
-			#loop through the grain list and perform some calculations
+		#loop through the grain list and add up the points
 		for grain in range(len(self.grainList)):
 			pointList.append(self.grainList[grain].points)
 			totalPoints += pointList[grain]
-			
-			colorList.append(self.grainList[grain].color)
-			totalColor += colorList[grain]
 			
 		self.ogDict.update({'pointList':pointList,'totalPoints':totalPoints})
 		
@@ -64,30 +59,41 @@ class Recipe(object):
 		OG = 1 + (OG / 1000)
 		self.ogDict.update({'OG': OG})
 
-		totalMCUs = totalColor / volume
-		moreyColor = 1.4922 * totalMCUs**0.6859
+		self.statisticalDict.update({'OG':self.ogDict['OG']})
 		
 		
-		self.statisticalDict.update({'OG':self.ogDict['OG'], 'SRM': moreyColor})
+	def updateIBU(self):
+		#This will update the recipe IBU.
 		
-		
-		#Store and calculate total AAUs and IBUs
-		
-		aauList = []
 		ibuList = []
 		
 		totalIBU = 0
 		
-			#Loop through the hop list, pull out AAUs (solely for storage at this point) and calculate IBU
-				#Only does Tinseth IBU calculations right now
+		#loop through the hop list and calculate IBU (Tinseth)
 		for hop in range(len(self.hopList)):
-			aauList.append(self.hopList[hop].aau)
 			ibuList.append((1.65 * 0.000125 **(self.statisticalDict['OG'] - 1)) * 
 				((1 - math.exp(-0.04 * self.hopList[hop].minutes)) / 4.15) * 
-				(((self.hopList[hop].aa / 100) * self.hopList[hop].weight * 7490) / volume))
+				(((self.hopList[hop].aa / 100) * self.hopList[hop].weight * 7490) / settings.FinalVolume))
 			totalIBU += ibuList[hop]
 		
 		self.statisticalDict.update({'IBU':totalIBU})
+	
+	
+	def updateColor(self):
+		#This will update the recipe color.
+		
+		totalColor = 0
+		colorList = []
+		
+		#loop through the grain list and add calculate total color (Morey)
+		for grain in range(len(self.grainList)):
+			colorList.append(self.grainList[grain].color)
+			totalColor += colorList[grain]
+			
+		totalMCUs = totalColor / settings.FinalVolume
+		srm = 1.4922 * totalMCUs**0.6859
+		
+		self.statisticalDict.update({'SRM':srm})
 			
 		
 		

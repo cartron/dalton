@@ -28,4 +28,4 @@ wortShrinkage = settings.WortShrinkage
 #boilTime = SOME THINGS
 
 def updateWater(self):
-	kettleLoss = (finalVolume + trubLoss) / wortShrinkage / (boilEvap * (boilTime/60)
+	kettleLoss = (finalVolume + trubLoss) / wortShrinkage / (boilEvap * (boilTime/60))
