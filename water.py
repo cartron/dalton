@@ -10,7 +10,7 @@
 
 import settings
 import grains
-#import recipe
+import recipe
 
 
 #Import settings. They will be used instead of the defaults (user override)
@@ -24,8 +24,8 @@ boilEvap = settings.BoilEvaporation
 trubLoss = settings.LossToTrub
 wortShrinkage = settings.WortShrinkage
 
-#grainWeight = SOME STUFF
-#boilTime = SOME THINGS
+grainWeight = recipe.Recipe().grainWeight
+boilTime = recipe.Recipe().boilLength
 
 def updateWater(self):
-	kettleLoss = (finalVolume + trubLoss) / wortShrinkage / (boilEvap * (boilTime/60))
+	kettleLoss = (finalVolume + trubLoss) / (1 - wortShrinkage) / (1 - (boilEvap * (boilTime/60)))

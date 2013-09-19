@@ -16,7 +16,7 @@ import math
 import settings
 import grains
 import hops
-import water
+#import water
 
 
 class Recipe(object):
@@ -30,6 +30,10 @@ class Recipe(object):
 		
 		self.ogDict = {}
 		self.statisticalDict = {'OG':0, 'IBU':0, 'SRM':0, 'ABV':0}
+		self.waterNeeded =  self.waterNeeded = {'Total Water': 0, 'Mash Water': 0, 'Sparge Water': 0}
+		
+		self.grainWeight = 0
+		self.boilLength = 0
 	
 		#These lists will hold all of the related objects that are created (to be looped through)
 		self.grainList=[grains.Grain(),grains.Grain(ppg=20)]
@@ -40,6 +44,10 @@ class Recipe(object):
 		self.updateGravity()
 		self.updateIBU()
 		self.updateColor()
+		
+		self.updateGrainWeight()
+		self.updateBoilTime()
+		self.updateWater()
 		
 		
 	def updateGravity(self):
@@ -94,6 +102,63 @@ class Recipe(object):
 		srm = 1.4922 * totalMCUs**0.6859
 		
 		self.statisticalDict.update({'SRM':srm})
+		
+		
+	def updateGrainWeight(self):
+		#This will update the total grain weight used.
+		
+		totalWeight = 0
+		weightList = []
+		
+		#loop through the grain list and aggregate grain weights
+		for grain in range(len(self.grainList)):
+			weightList.append(self.grainList[grain].weight)
+			totalWeight += weightList[grain]
+		self.grainWeight = totalWeight
+		
+		
+	def updateBoilTime(self):
+		#This updates the total boil time of the recipe.
+		
+		boilTime = 0
+		boilList = []
+		
+		#loop through the hop list and extract boil times
+		for hop in range(len(self.hopList)):
+			boilList.append(self.hopList[hop].minutes)
+		boilTime = max(boilList)
+		self.boilLength = boilTime
+		
+	
+	def updateWater(self):
+		#This updates water calculations
+		
+		#Import variables from settings
+		finalVolume = settings.FinalVolume
+		efficiency = settings.Efficiency
+		grainAbsorb = settings.GrainAbsorbtion
+		mashThickness = settings.MashThickness
+		lossToTun = settings.LossToTun
+		boilEvap = settings.BoilEvaporation
+		trubLoss = settings.LossToTrub
+		wortShrinkage = settings.WortShrinkage
+
+		grainWeight = self.grainWeight
+
+		#calculations
+		kettleLoss = (finalVolume + trubLoss) / (1 - wortShrinkage) / (1 - (boilEvap * (self.boilLength/60)))
+		tunLoss = (grainAbsorb * (grainWeight/16)) + lossToTun
+		
+		totalWater = kettleLoss + tunLoss
+		
+		mashWater = (mashThickness * (grainWeight/16))/4
+		spargeWater = totalWater - mashWater
+		
+		self.waterNeeded = {'Total Water': totalWater, 'Mash Water': mashWater, 'Sparge Water': spargeWater}
+		
+		
+		
+		
 			
 		
 		
@@ -112,6 +177,11 @@ print('testing OG calcs:',recipe.statisticalDict['OG'])
 print('printing recipe.hopList:',recipe.hopList)
 
 print('testing stats:',recipe.statisticalDict)
+
+print('testing grain weight:',recipe.grainWeight, 'oz')
+print('testing boil length:',recipe.boilLength, 'min')
+
+print('testing the waters', recipe.waterNeeded)
 
 input('/nExit')
 
